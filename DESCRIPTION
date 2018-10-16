@@ -1,0 +1,22 @@
+Package: MALDImID
+Type: Package
+Title: MALDImID
+Version: 1.0.0
+Date: 2018-09-01
+Authors@R: c(
+    person("Cristiano", "Oliveira", email = "cristiano.oliveira@med.uni-heidelberg.de", role = c("aut", "cre")),
+    person("Remi", "Longuespee", email = "remi.longuespee@med.uni-heidelberg.de", role = c("aut")))
+Description:
+    TODO dfgdfg dfsg d
+Imports:
+  stringr,
+  shiny,
+  shinyjs,
+  shinyBS,
+  openxlsx
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr

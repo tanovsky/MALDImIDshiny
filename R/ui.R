@@ -1,9 +1,9 @@
-#' MALDImIDUI Shinyapp
-#' ShinyApp from \code{\link{MALDImIDUI}}
+#' MALDImID Shinyapp
+#' ShinyApp from \code{\link{MALDImID}}
 #'
-#' @author Cristiano Oliveira, \email{cristiano.oliveira@iph.med-heidelberg.de}
-#' @seealso \code{\link{MALDImIDUI}}
-#' @keywords MALDImIDUI
+#' @author Cristiano Oliveira, \email{oliveirc@dkfz.de}
+#' @seealso \code{\link{MALDImID}}
+#' @keywords MALDImID
 #'
 
 #' @importFrom shiny renderDataTable
@@ -61,10 +61,10 @@
 #' @importFrom shinyBS tipify
 #' @importFrom shinyjs useShinyjs
 #' @importFrom shiny textAreaInput
-#'
-#'
-
+#' @importFrom shiny textInput
 #'@importFrom shiny sliderInput
+
+
 
 # #' @noRd
 # MALDImIDUI <- function() {
@@ -108,6 +108,9 @@ MALDImIDUI <- function() {
       sidebarLayout(
         sidebarPanel(
           width = 3,
+          div(id = "conditionHelper",
+              textInput(inputId = "condition",
+                        label="Condition")),
           div(id = "peptideFilepathHelper",
               fileInput(inputId = "peptideFilepath",
                         label="Peptide file",
@@ -115,7 +118,7 @@ MALDImIDUI <- function() {
                         accept = NULL)),
           div(id = "hsilFilepathHelper",
               fileInput(inputId = "hsilFilepath",
-                        label="HSIL file",
+                        label="Condition file",
                         multiple = FALSE,
                         accept = NULL)),
           div(id = "mzValueHelper",
@@ -139,7 +142,8 @@ MALDImIDUI <- function() {
                       tabPanel('Peptides', value = "peptideFilepath",
                                div(style = "margin-top: 30px"),
                                dataTableOutput("importedPeptideFilepath")),
-                      tabPanel('HSIL', value = "hsilFilepath",
+                      tabPanel('Condition', value = "hsilFilepath",
+#                      tabPanel('HSIL', value = "hsilFilepath",
                                div(style = "margin-top: 30px"),
                                dataTableOutput("importedHsilFilepath")),
                       tabPanel('Analysis', value = "analysis",

@@ -1,10 +1,3 @@
-#' CutoffFinder Shinyapp
-#' ShinyApp from \code{\link{cutoff}}
-#'
-#' @author Cristiano Oliveira, \email{cristiano.oliveira@iph.med-heidelberg.de}
-#' @seealso \code{\link{cutoff}}
-#' @keywords cutoff
-
 #' @importFrom shiny renderDataTable
 #' @importFrom shiny insertUI
 #' @importFrom shiny observeEvent
@@ -94,6 +87,9 @@ MALDImIDServer <- function(input, output, session) {
   #                     #                    options = NULL,
   #                     options = list(delay = list(show=1000, hide=3000)))
 
+  addTooltipHelper(session = session,
+                   id = "conditionHelper",
+                   title = "Input the condition to be compared")
 
   addTooltipHelper(session = session,
                    id = "peptideFilepathHelper",
@@ -155,6 +151,9 @@ MALDImIDServer <- function(input, output, session) {
       #                    sep = "\t")
 
       myData <- read.xlsx(UploadedFilepaths(input$hsilFilepath, inputDirectory))
+
+
+
       # output$importedPeptideFilepath <- renderDataTable(FixDataTable(input$hsilFilepath,
       #                                                            inputDirectory,
       #                                                            type = file_ext(input$hsilFilepath$datapath)),
@@ -253,7 +252,8 @@ MALDImIDServer <- function(input, output, session) {
 
     results <- NULL
     withProgress(message = 'Calculating..', value = 0, {
-    results <- GetResult(UploadedFilepaths(input$peptideFilepath, inputDirectory),
+    results <- GetResult(input$condition,
+                         UploadedFilepaths(input$peptideFilepath, inputDirectory),
                          UploadedFilepaths(input$hsilFilepath, inputDirectory),
                          mzValues,
                          file.path(inputDirectory,'resultsMaldimyid.xlsx'))

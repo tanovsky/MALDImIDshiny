@@ -74,16 +74,18 @@ IsMzWithinMargin <- function(value, mzValues, mzMaldiAdjustement = 1, mzMargin =
 
 
 #' @noRd
-GetResult <- function(inputFilepath, inputMembersHSIL_Filepath, mzValues, outputFilepath) {
+GetResult <- function(conditionChosen, inputFilepath, inputMembersHSIL_Filepath, mzValues, outputFilepath) {
 
   # inputFilepath <-
   #
   #   inputFilepath <-'/Users/tanovsky/wip/Remy/MASSturbo/resources/peptides.txt',
   # inputMembersHSIL_Filepath <- '/Users/tanovsky/wip/Remy/MASSturbo/resources/members HSIL.xlsx',
-  # mzValues <- '865.39\n987.57\n1905,95',
+  # mzValues <- '865.39\n987.57\n1905.95',
   #             'resultsMaldimyid.xlsx'
 
-condition <- "HSIL"
+#condition <- "HSIL"
+#condition <- "ADE"
+
 myData <- read.csv(file = inputFilepath, check.names = FALSE, sep = "\t")
 membersHSILrawData <- read.xlsx(inputMembersHSIL_Filepath)
 geneNameHSIL <- membersHSILrawData$Gene.name
@@ -95,13 +97,15 @@ conditionColumn <- names(table(conditionColumnAndCondition[,1]))
 numberOfSamplesPerCondition <- table(conditionColumnAndCondition[,2])
 conditions <- names(numberOfSamplesPerCondition)
 
-conditionColumnsHeaders <- columnNames[grepl(paste0("Intensity ", condition, "[0-9]+"), columnNames)]
+conditionColumnsHeaders <- columnNames[grepl(paste0("Intensity ", conditionChosen, "[0-9]+"), columnNames)]
 selectedTableHeaders <- c("Mass", "Proteins", "Gene names", "Score", "Unique (Proteins)")
 myFilteredData <- myData[, selectedTableHeaders]
 for (conditionColumnHeader in conditionColumn) {
   myFilteredData <- cbind(myFilteredData, apply(myData[, grepl(conditionColumnHeader, columnNames)], 1, mean))
 }
-colnames(myFilteredData) <- c(selectedTableHeaders, paste("Average", conditionColumn))
+
+averageHeader <- "Average"
+colnames(myFilteredData) <- c(selectedTableHeaders, paste(averageHeader, conditionColumn))
 
 
 positiveReplicatesTable <- NULL
@@ -128,15 +132,25 @@ myFilteredData <- cbind(tmpTruncatedMass = truncatedMasses, myFilteredData)
 filteredAndSortedTable <- NULL
 for (i in uniqueTruncatedMasses) {
   tmpTable <- myFilteredData[myFilteredData$tmpTruncatedMass == i, -c(1)]
-  filteredAndSortedTable <- rbind(filteredAndSortedTable, tmpTable[order(tmpTable$"Average Intensity HSIL"),])
+#  filteredAndSortedTable <- rbind(filteredAndSortedTable, tmpTable[order(tmpTable$"Average Intensity HSIL"),])
+
+  averageColumnName <- paste("Average Intensity", conditionChosen)
+  filteredAndSortedTable <- rbind(filteredAndSortedTable, tmpTable[order(tmpTable[, averageColumnName]),])
+
+
 }
 
 filteredAndSortedTable <- cbind(filteredAndSortedTable,
                                 genePresentAtHSIL = filteredAndSortedTable$"Gene names" %in% geneNameHSIL)
 
+genePresentAtConditionChosenColumnName <- paste0("genePresentAt", conditionChosen)
+names(filteredAndSortedTable)[length(names(filteredAndSortedTable))] <- genePresentAtConditionChosenColumnName
+
 # To visualize only the interesting results..
+# interestingResults <- filteredAndSortedTable[(filteredAndSortedTable$mzWithinRange != "No") &
+#                          filteredAndSortedTable$genePresentAtHSIL,]
 interestingResults <- filteredAndSortedTable[(filteredAndSortedTable$mzWithinRange != "No") &
-                         filteredAndSortedTable$genePresentAtHSIL,]
+                                               filteredAndSortedTable[, genePresentAtConditionChosenColumnName],]
 
 # To output the filtered results as an xlsx file
 outputDir <- dirname(outputFilepath)

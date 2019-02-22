@@ -1,7 +1,7 @@
 #' MALDImID Shinyapp
 #' MALDImID from \code{\link{MALDImID}}
 #'
-#' @author Cristiano Oliveira, \email{cristiano.oliveira@iph.med-heidelberg.de}
+#' @author Cristiano Oliveira, \email{oliveirc@dkfz.de}
 #' @seealso \code{\link{MALDImID}}
 #' @keywords MALDImID
 

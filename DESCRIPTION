@@ -7,12 +7,12 @@ Authors@R: c(
     person("Cristiano", "Oliveira", email = "cristiano.oliveira@med.uni-heidelberg.de", role = c("aut", "cre")),
     person("Remi", "Longuespee", email = "remi.longuespee@med.uni-heidelberg.de", role = c("aut")))
 Description:
-    TODO dfgdfg dfsg d
+    TODO
 Imports:
-  stringr,
   shiny,
   shinyjs,
   shinyBS,
+  stringr,
   openxlsx
 License: GPL-3
 Encoding: UTF-8

@@ -156,6 +156,7 @@ interestingResults <- filteredAndSortedTable[(filteredAndSortedTable$mzWithinRan
 outputDir <- dirname(outputFilepath)
 dir.create(outputDir, showWarnings = FALSE)
 write.xlsx(filteredAndSortedTable, file = outputFilepath)
-print("FINTIUOO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print("Output file created.")
 return(interestingResults)
 }
+
